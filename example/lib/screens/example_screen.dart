@@ -48,43 +48,22 @@ class ExampleScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          TransformableSliverList(
-            getTransformMatrix: getScaleDownTransformMatrix,
-            delegate: SliverChildListDelegate(
-              [
-                for (int index = 0; index < 30; index++)
-                  Container(
-                    height: 100,
-                    margin: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: index.isEven
-                          ? Colors.black.withOpacity(0.3)
-                          : Colors.blueAccent,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(index.toString()),
-                  )
-              ],
-            ),
-            // delegate: SliverChildBuilderDelegate(
-            //   (context, index) {
-            //     return Container(
-            //       height: 100,
-            //       margin: const EdgeInsets.all(8),
-            //       decoration: BoxDecoration(
-            //         color: index.isEven
-            //             ? Colors.black.withOpacity(0.3)
-            //             : Colors.blueAccent,
-            //         borderRadius: BorderRadius.circular(20),
-            //       ),
-            //       alignment: Alignment.center,
-            //       child: Text(index.toString()),
-            //     );
-            //   },
-            //   childCount: 30,
-            // ),
-          ),
+          for (int index = 0; index < 30; index++)
+            TransformableSliver(
+              getTransformMatrix: getScaleDownTransformMatrix,
+              child: Container(
+                height: 100,
+                margin: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: index.isEven
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.blueAccent,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                alignment: Alignment.center,
+                child: Text(index.toString()),
+              ),
+            )
         ],
       ),
     );
