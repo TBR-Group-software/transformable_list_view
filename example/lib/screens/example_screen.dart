@@ -12,7 +12,7 @@ class ExampleScreen extends StatelessWidget {
     double paintExtent,
     int? index,
   ) {
-    const animationBound = 200.0;
+    const animationBound = 500.0;
 
     /// distance between bottom edge of child and the top edge of viewport
     final closingOffset = offset.dy + paintExtent;
@@ -24,12 +24,12 @@ class ExampleScreen extends StatelessWidget {
     Matrix4? paintTransform;
     if (animationProgress < 1 && animationProgress > 0) {
       /// final scale of child when the animatioon is completed
-      const endScaleBound = 0.7;
+      const endScaleBound = 0.5;
 
       /// if > 1 -> the animation is faster on the beginnig than at the end
       /// if < 1 -> the animation is faster on the end than at the beginniglp
       /// if = 1 -> no deceleration
-      const decelerationFactor = 2.4;
+      const decelerationFactor = 1;
 
       final scale = endScaleBound +
           ((1 - endScaleBound) * pow(animationProgress, decelerationFactor));
@@ -46,25 +46,23 @@ class ExampleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          for (int index = 0; index < 30; index++)
-            TransformableSliver(
-              getTransformMatrix: getScaleDownTransformMatrix,
-              child: Container(
-                height: 100,
-                margin: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: index.isEven
-                      ? Colors.black.withOpacity(0.3)
-                      : Colors.blueAccent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                alignment: Alignment.center,
-                child: Text(index.toString()),
-              ),
-            )
-        ],
+      body: TransformableListView.builder(
+        getTransformMatrix: getScaleDownTransformMatrix,
+        itemBuilder: (context, index) {
+          return Container(
+            height: 100,
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: index.isEven
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.blueAccent,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            alignment: Alignment.center,
+            child: Text(index.toString()),
+          );
+        },
+        itemCount: 30,
       ),
     );
   }
