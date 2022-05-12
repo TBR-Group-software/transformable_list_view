@@ -6,7 +6,12 @@ import 'package:transformable_list_view/transformable_list_view.dart';
 class ExampleScreen extends StatelessWidget {
   const ExampleScreen({Key? key}) : super(key: key);
 
-  Matrix4 getScaleDownTransformMatrix(Offset offset, Size size, double paintExtent) {
+  Matrix4 getScaleDownTransformMatrix(
+    Offset offset,
+    Size size,
+    double paintExtent,
+    int? index,
+  ) {
     const animationBound = 200.0;
 
     /// distance between bottom edge of child and the top edge of viewport
@@ -45,23 +50,40 @@ class ExampleScreen extends StatelessWidget {
         slivers: [
           TransformableSliverList(
             getTransformMatrix: getScaleDownTransformMatrix,
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return Container(
-                  height: 100,
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: index.isEven
-                        ? Colors.black.withOpacity(0.3)
-                        : Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(index.toString()),
-                );
-              },
-              childCount: 30,
+            delegate: SliverChildListDelegate(
+              [
+                for (int index = 0; index < 30; index++)
+                  Container(
+                    height: 100,
+                    margin: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: index.isEven
+                          ? Colors.black.withOpacity(0.3)
+                          : Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(index.toString()),
+                  )
+              ],
             ),
+            // delegate: SliverChildBuilderDelegate(
+            //   (context, index) {
+            //     return Container(
+            //       height: 100,
+            //       margin: const EdgeInsets.all(8),
+            //       decoration: BoxDecoration(
+            //         color: index.isEven
+            //             ? Colors.black.withOpacity(0.3)
+            //             : Colors.blueAccent,
+            //         borderRadius: BorderRadius.circular(20),
+            //       ),
+            //       alignment: Alignment.center,
+            //       child: Text(index.toString()),
+            //     );
+            //   },
+            //   childCount: 30,
+            // ),
           ),
         ],
       ),

@@ -89,6 +89,7 @@ class TransformableRenderSliverList extends RenderSliverList {
           childOffset,
           child.size,
           paintExtentOf(child),
+          child is RenderIndexedSemantics ? child.index : null,
         );
 
         context.pushTransform(
