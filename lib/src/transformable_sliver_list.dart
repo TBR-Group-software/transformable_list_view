@@ -97,6 +97,7 @@ class TransformableRenderSliverList extends RenderSliverList {
           childOffset,
           paintTransform,
           (context, offset) => context.paintChild(child!, offset),
+          ///TODO add [oldLayer] for perfomance optimization
         );
 
         //// --------------- OVERRIDE ---------------
