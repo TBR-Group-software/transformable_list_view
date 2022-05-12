@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:transformable_list_view/src/transform_matrix_callback.dart';
 
 class TransformableSliverList extends SliverList {
-  final Matrix4 Function(Offset offset, Size size, double paintExtent)
-      getTransformMatrix;
+  final TransformMatrixCallback getTransformMatrix;
 
   const TransformableSliverList({
     required SliverChildDelegate delegate,
@@ -23,8 +23,7 @@ class TransformableSliverList extends SliverList {
 }
 
 class TransformableRenderSliverList extends RenderSliverList {
-  final Matrix4 Function(Offset offset, Size size, double paintExtent)
-      getTransformMatrix;
+  final TransformMatrixCallback getTransformMatrix;
 
   TransformableRenderSliverList({
     required RenderSliverBoxChildManager childManager,
