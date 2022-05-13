@@ -32,26 +32,10 @@ class TransformableRenderSliver extends RenderSliverToBoxAdapter {
       return;
     }
 
-    final double childExtent;
-    switch (constraints.axis) {
-      case Axis.horizontal:
-        childExtent = size.width;
-        break;
-      case Axis.vertical:
-        childExtent = size.height;
-        break;
-    }
-
-    final paintExtent = calculatePaintOffset(
-      constraints,
-      from: 0,
-      to: childExtent,
-    );
-
     final paintTransform = getTransformMatrix(
       offset,
       size,
-      paintExtent,
+      constraints.viewportMainAxisExtent,
       null,
     );
 

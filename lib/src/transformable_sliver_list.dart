@@ -88,7 +88,7 @@ class TransformableRenderSliverList extends RenderSliverList {
         final paintTransform = getTransformMatrix(
           childOffset,
           child.size,
-          paintExtentOf(child),
+          constraints.viewportMainAxisExtent,
           child is RenderIndexedSemantics ? child.index : null,
         );
 
@@ -97,6 +97,7 @@ class TransformableRenderSliverList extends RenderSliverList {
           childOffset,
           paintTransform,
           (context, offset) => context.paintChild(child!, offset),
+
           ///TODO add [oldLayer] for perfomance optimization
         );
 
