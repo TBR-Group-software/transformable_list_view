@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:transformable_list_view/transformable_list_view.dart';
 
@@ -21,26 +19,20 @@ class ExampleScreen extends StatelessWidget {
     /// 1 when animation starts and [scale] == 1
     final animationProgress = closingOffset / animationBound;
 
-    Matrix4? paintTransform;
+    final paintTransform = Matrix4.identity();
     if (animationProgress < 1 && animationProgress > 0) {
       /// final scale of child when the animatioon is completed
       const endScaleBound = 0.5;
 
-      /// if > 1 -> the animation is faster on the beginnig than at the end
-      /// if < 1 -> the animation is faster on the end than at the beginniglp
-      /// if = 1 -> no deceleration
-      const decelerationFactor = 1;
+      final scale = endScaleBound + ((1 - endScaleBound) * animationProgress);
 
-      final scale = endScaleBound +
-          ((1 - endScaleBound) * pow(animationProgress, decelerationFactor));
-
-      paintTransform = Matrix4.identity()
+      paintTransform
         ..translate(size.width / 2, paintExtent)
         ..scale(scale)
         ..translate(-size.width / 2, -paintExtent);
     }
 
-    return paintTransform ?? Matrix4.identity();
+    return paintTransform;
   }
 
   @override
