@@ -4,32 +4,41 @@ import 'package:transformable_list_view/transformable_list_view.dart';
 class ExampleScreen extends StatelessWidget {
   const ExampleScreen({Key? key}) : super(key: key);
 
-  Matrix4 getScaleDownTransformMatrix(
+  Matrix4 getScaleDownMatrix(
     Offset offset,
     Size size,
-    double paintExtent,
+    double viewportMainAxisExtent,
     int? index,
   ) {
-    const animationBound = 500.0;
+    /// currently visible portion of childs
+    late final double visibleSize;
 
-    /// distance between bottom edge of child and the top edge of viewport
-    final closingOffset = offset.dy + paintExtent;
+    if (offset.dy < 0) {
+      /// on the top edge of viewport
+      visibleSize = size.height + offset.dy;
+    } else if (offset.dy > viewportMainAxisExtent - size.height) {
+      /// on the bottom edge of viewport
+      visibleSize = viewportMainAxisExtent - offset.dy;
+    } else {
+      /// fully displayed
+      visibleSize = size.height;
+    }
+
+    /// final scale of child when the animatioon is completed
+    const endScaleBound = 0.3;
 
     /// 0 when animation completed and [scale] == [endScaleBound]
     /// 1 when animation starts and [scale] == 1
-    final animationProgress = closingOffset / animationBound;
+    final animationProgress = visibleSize / size.height;
 
     final paintTransform = Matrix4.identity();
     if (animationProgress < 1 && animationProgress > 0) {
-      /// final scale of child when the animatioon is completed
-      const endScaleBound = 0.5;
-
       final scale = endScaleBound + ((1 - endScaleBound) * animationProgress);
 
       paintTransform
-        ..translate(size.width / 2, paintExtent)
+        ..translate(size.width / 2)
         ..scale(scale)
-        ..translate(-size.width / 2, -paintExtent);
+        ..translate(-size.width / 2);
     }
 
     return paintTransform;
@@ -39,7 +48,7 @@ class ExampleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: TransformableListView.builder(
-        getTransformMatrix: getScaleDownTransformMatrix,
+        getTransformMatrix: getScaleDownMatrix,
         itemBuilder: (context, index) {
           return Container(
             height: 100,
