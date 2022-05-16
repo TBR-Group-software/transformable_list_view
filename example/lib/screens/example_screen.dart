@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:transformable_list_view/transformable_list_view.dart';
 
@@ -11,11 +13,12 @@ class ExampleScreen extends StatelessWidget {
     /// 0 when animation completed and [scale] == [endScaleBound]
     /// 1 when animation starts and [scale] == 1
     final animationProgress = item.visibleExtent / item.size.height;
-    
-    //if(item.index == 0) print(item.visibleExtent);
 
+    /// result matrix
     final paintTransform = Matrix4.identity();
-    if (animationProgress < 1 && animationProgress > 0) {
+
+    /// animate only if item is on edge
+    if (item.position != TransformableListItemPosition.middle) {
       final scale = endScaleBound + ((1 - endScaleBound) * animationProgress);
 
       paintTransform
@@ -27,11 +30,60 @@ class ExampleScreen extends StatelessWidget {
     return paintTransform;
   }
 
+  Matrix4 getRotateMatrix(TransformableListItem item) {
+    /// rotate item to 90 degrees
+    const quarterTurnsInRadians = pi / 2.0;
+
+    /// 0 when animation starts and [rotateAngle] == 0 degrees
+    /// 1 when animation completed and [rotateAngle] == 90 degrees
+    final animationProgress = 1 - item.visibleExtent / item.size.height;
+
+    /// result matrix
+    final paintTransform = Matrix4.identity();
+
+    /// animate only if item is on edge
+    if (item.position != TransformableListItemPosition.middle) {
+      /// rotate to the left if even
+      /// rotate to the right if odd
+      final isEven = item.index?.isEven ?? false;
+
+      /// To select corner of the rotation
+      final FractionalOffset fractionalOffset;
+      final int rotateDirection;
+
+      switch (item.position) {
+        case TransformableListItemPosition.topEdge:
+          fractionalOffset = isEven
+              ? FractionalOffset.bottomLeft
+              : FractionalOffset.bottomRight;
+          rotateDirection = isEven ? -1 : 1;
+          break;
+        case TransformableListItemPosition.middle:
+          return paintTransform;
+        case TransformableListItemPosition.bottomEdge:
+          fractionalOffset =
+              isEven ? FractionalOffset.topLeft : FractionalOffset.topRight;
+          rotateDirection = isEven ? 1 : -1;
+          break;
+      }
+
+      final rotateAngle = animationProgress * quarterTurnsInRadians;
+      final translation = fractionalOffset.alongSize(item.size);
+
+      paintTransform
+        ..translate(translation.dx, translation.dy)
+        ..rotateZ(rotateDirection * rotateAngle)
+        ..translate(-translation.dx, -translation.dy);
+    }
+
+    return paintTransform;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: TransformableListView.builder(
-        getTransformMatrix: getScaleDownMatrix,
+        getTransformMatrix: getRotateMatrix,
         itemBuilder: (context, index) {
           return Container(
             height: 100,
@@ -40,9 +92,7 @@ class ExampleScreen extends StatelessWidget {
               vertical: 4,
             ),
             decoration: BoxDecoration(
-              color: index.isEven
-                  ? Colors.black.withOpacity(0.3)
-                  : Colors.blueAccent,
+              color: index.isEven ? Colors.grey : Colors.blueAccent,
               borderRadius: BorderRadius.circular(20),
             ),
             alignment: Alignment.center,
