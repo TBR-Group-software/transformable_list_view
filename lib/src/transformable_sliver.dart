@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:transformable_list_view/src/transform_matrix_callback.dart';
+import 'package:transformable_list_view/src/transformable_list_item.dart';
 
 class TransformableSliver extends SingleChildRenderObjectWidget {
   final TransformMatrixCallback getTransformMatrix;
@@ -33,10 +34,11 @@ class TransformableRenderSliver extends RenderSliverToBoxAdapter {
     }
 
     final paintTransform = getTransformMatrix(
-      offset,
-      size,
-      constraints.viewportMainAxisExtent,
-      null,
+      TransformableListItem(
+        offset: offset,
+        size: size,
+        constraints: constraints,
+      ),
     );
 
     transformLayer.layer = child != null && (geometry?.visible ?? false)

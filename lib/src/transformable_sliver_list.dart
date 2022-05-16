@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:transformable_list_view/src/transform_matrix_callback.dart';
+import 'package:transformable_list_view/src/transformable_list_item.dart';
 
 class TransformableSliverList extends SliverList {
   final TransformMatrixCallback getTransformMatrix;
@@ -86,10 +87,12 @@ class TransformableRenderSliverList extends RenderSliverList {
           mainAxisDelta + paintExtentOf(child) > 0) {
         //// --------------- OVERRIDE ---------------
         final paintTransform = getTransformMatrix(
-          childOffset,
-          child.size,
-          constraints.viewportMainAxisExtent,
-          child is RenderIndexedSemantics ? child.index : null,
+          TransformableListItem(
+            offset: childOffset,
+            size: child.size,
+            constraints: constraints,
+            index: child is RenderIndexedSemantics ? child.index : null,
+          ),
         );
 
         context.pushTransform(
