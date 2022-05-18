@@ -37,9 +37,19 @@ class TransformableRenderSliver extends RenderSliverToBoxAdapter
       return;
     }
 
+    final Offset itemOffset;
+    switch (constraints.axis) {
+      case Axis.horizontal:
+        itemOffset = offset.translate(offset.dx == 0 ? -constraints.scrollOffset : 0, 0);
+        break;
+      case Axis.vertical:
+        itemOffset = offset.translate(0, offset.dy == 0 ? -constraints.scrollOffset : 0);
+        break;
+    }
+
     paintTransform = getTransformMatrix(
       TransformableListItem(
-        offset: offset,
+        offset: itemOffset,
         size: size,
         constraints: constraints,
       ),
