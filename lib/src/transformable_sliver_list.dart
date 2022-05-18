@@ -25,6 +25,8 @@ class TransformableSliverList extends SliverList {
 
 class TransformableRenderSliverList extends RenderSliverList {
   final TransformMatrixCallback getTransformMatrix;
+  /// transform of the each child
+  final _cachedTransforms = <RenderBox, Matrix4>{};
 
   TransformableRenderSliverList({
     required RenderSliverBoxChildManager childManager,
@@ -85,7 +87,7 @@ class TransformableRenderSliverList extends RenderSliverList {
       // does not intersect the paint extent interval (0, constraints.remainingPaintExtent), it's hidden.
       if (mainAxisDelta < constraints.remainingPaintExtent &&
           mainAxisDelta + paintExtentOf(child) > 0) {
-        //// --------------- OVERRIDE ---------------
+        //// ---------------↓↓↓OVERRIDE↓↓↓---------------
         final paintTransform = getTransformMatrix(
           TransformableListItem(
             offset: childOffset,
@@ -94,6 +96,7 @@ class TransformableRenderSliverList extends RenderSliverList {
             index: child is RenderIndexedSemantics ? child.index : null,
           ),
         );
+        _cachedTransforms[child] = paintTransform;
 
         context.pushTransform(
           needsCompositing,
@@ -104,10 +107,76 @@ class TransformableRenderSliverList extends RenderSliverList {
           ///TODO add [oldLayer] for perfomance optimization
         );
 
-        //// --------------- OVERRIDE ---------------
+        //// ---------------↑↑↑OVERRIDE↑↑↑---------------
       }
 
       child = childAfter(child);
     }
+  }
+
+  @override
+  bool hitTestBoxChild(BoxHitTestResult result, RenderBox child,
+      {required double mainAxisPosition, required double crossAxisPosition}) {
+    //// Copied from [RenderSliverHelpers] except the OVERRIDE
+    final bool rightWayUp = _getRightWayUp(constraints);
+    double delta = childMainAxisPosition(child);
+    final double crossAxisDelta = childCrossAxisPosition(child);
+    double absolutePosition = mainAxisPosition - delta;
+    final double absoluteCrossAxisPosition = crossAxisPosition - crossAxisDelta;
+    // ignore: unused_local_variable
+    Offset paintOffset, transformedPosition;
+    switch (constraints.axis) {
+      case Axis.horizontal:
+        if (!rightWayUp) {
+          absolutePosition = child.size.width - absolutePosition;
+          delta = geometry!.paintExtent - child.size.width - delta;
+        }
+        paintOffset = Offset(delta, crossAxisDelta);
+        transformedPosition =
+            Offset(absolutePosition, absoluteCrossAxisPosition);
+        break;
+      case Axis.vertical:
+        if (!rightWayUp) {
+          absolutePosition = child.size.height - absolutePosition;
+          delta = geometry!.paintExtent - child.size.height - delta;
+        }
+        paintOffset = Offset(crossAxisDelta, delta);
+        transformedPosition =
+            Offset(absoluteCrossAxisPosition, absolutePosition);
+        break;
+    }
+    //// ---------------↓↓↓OVERRIDE↓↓↓---------------
+    final transform = _cachedTransforms[child] ?? Matrix4.identity();
+
+    return result.addWithPaintTransform(
+      transform: transform,
+      position: transformedPosition,
+      hitTest: (result, offset) => child.hitTest(result, position: offset),
+    );
+    //// ---------------↑↑↑OVERRIDE↑↑↑---------------
+  }
+
+
+  //// Copied from [RenderSliverHelpers]
+  bool _getRightWayUp(SliverConstraints constraints) {
+    bool rightWayUp;
+    switch (constraints.axisDirection) {
+      case AxisDirection.up:
+      case AxisDirection.left:
+        rightWayUp = false;
+        break;
+      case AxisDirection.down:
+      case AxisDirection.right:
+        rightWayUp = true;
+        break;
+    }
+    switch (constraints.growthDirection) {
+      case GrowthDirection.forward:
+        break;
+      case GrowthDirection.reverse:
+        rightWayUp = !rightWayUp;
+        break;
+    }
+    return rightWayUp;
   }
 }
