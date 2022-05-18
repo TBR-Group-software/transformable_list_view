@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:transformable_list_view/src/transform_matrix_callback.dart';
 import 'package:transformable_list_view/src/transformable_list_item.dart';
+import 'package:transformable_list_view/src/transformable_render_sliver_helpers.dart';
 
 class TransformableSliver extends SingleChildRenderObjectWidget {
   final TransformMatrixCallback getTransformMatrix;
@@ -19,9 +20,12 @@ class TransformableSliver extends SingleChildRenderObjectWidget {
   }
 }
 
-class TransformableRenderSliver extends RenderSliverToBoxAdapter {
+class TransformableRenderSliver extends RenderSliverToBoxAdapter
+    with TransformableRenderSliverHelpers {
   final TransformMatrixCallback getTransformMatrix;
   final transformLayer = LayerHandle<TransformLayer>();
+
+  Matrix4 paintTransform = Matrix4.identity();
 
   TransformableRenderSliver({required this.getTransformMatrix});
 
@@ -33,7 +37,7 @@ class TransformableRenderSliver extends RenderSliverToBoxAdapter {
       return;
     }
 
-    final paintTransform = getTransformMatrix(
+    paintTransform = getTransformMatrix(
       TransformableListItem(
         offset: offset,
         size: size,
@@ -50,5 +54,17 @@ class TransformableRenderSliver extends RenderSliverToBoxAdapter {
             oldLayer: transformLayer.layer,
           )
         : null;
+  }
+
+  @override
+  bool hitTestBoxChild(BoxHitTestResult result, RenderBox child,
+      {required double mainAxisPosition, required double crossAxisPosition}) {
+    return hitTestBoxChildWithTransform(
+      result,
+      child,
+      mainAxisPosition: mainAxisPosition,
+      crossAxisPosition: crossAxisPosition,
+      transform: paintTransform,
+    );
   }
 }
