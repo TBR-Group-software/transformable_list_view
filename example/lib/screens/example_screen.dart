@@ -32,7 +32,7 @@ class ExampleScreen extends StatelessWidget {
 
   Matrix4 getRotateMatrix(TransformableListItem item) {
     /// rotate item to 90 degrees
-    const quarterTurnsInRadians = pi / 2.0;
+    const maxRotationTurnsInRadians = pi / 2.0;
 
     /// 0 when animation starts and [rotateAngle] == 0 degrees
     /// 1 when animation completed and [rotateAngle] == 90 degrees
@@ -67,7 +67,7 @@ class ExampleScreen extends StatelessWidget {
           break;
       }
 
-      final rotateAngle = animationProgress * quarterTurnsInRadians;
+      final rotateAngle = animationProgress * maxRotationTurnsInRadians;
       final translation = fractionalOffset.alongSize(item.size);
 
       paintTransform
@@ -79,16 +79,43 @@ class ExampleScreen extends StatelessWidget {
     return paintTransform;
   }
 
+  Matrix4 getWheelMatrix(TransformableListItem item) {
+    const maxRotationTurnsInRadians = pi / 5.0;
+    const minScale = 0.6;
+    const maxScale = 1.0;
+    const depthFactor = 0.01;
+
+    /// offset when [animationProgress] == 0
+    final medianOffset = item.constraints.viewportMainAxisExtent / 2;
+    final animationProgress =
+        1 - item.offset.dy.clamp(0, double.infinity) / medianOffset;
+    final scale = minScale + (maxScale - minScale) * animationProgress.abs();
+
+    /// alignment of item
+    final translationOffset = FractionalOffset.center.alongSize(item.size);
+    final rotationMatrix = Matrix4.identity()
+      ..setEntry(3, 2, depthFactor)
+      ..rotateX(maxRotationTurnsInRadians * animationProgress)
+      ..scale(scale);
+
+    final result = Matrix4.identity()
+      ..translate(translationOffset.dx, translationOffset.dy)
+      ..multiply(rotationMatrix)
+      ..translate(-translationOffset.dx, -translationOffset.dy);
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: TransformableListView.builder(
-        getTransformMatrix: getRotateMatrix,
+        getTransformMatrix: getWheelMatrix,
         itemBuilder: (context, index) {
           return Container(
             height: 100,
             margin: const EdgeInsets.symmetric(
-              horizontal: 8,
+              horizontal: 16,
               vertical: 4,
             ),
             decoration: BoxDecoration(
