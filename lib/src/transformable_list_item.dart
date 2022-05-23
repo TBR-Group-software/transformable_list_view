@@ -10,7 +10,6 @@ class TransformableListItem {
   final Size size;
 
   /// Describes the current scroll state of the viewport from the point of view of the sliver receiving the constraints.
-  /// For example, a [scrollOffset] of zero means that the leading edge of the sliver is visible in the viewport, not that the viewport itself has a zero scroll offset.
   final SliverConstraints constraints;
 
   /// Index of the child. Will be null when using [TransformableSliver]
