@@ -154,6 +154,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
                   TransformableListView.builder(
                     key: Key(matrix.key),
                     controller: ScrollController(),
+                    padding: EdgeInsets.zero,
                     getTransformMatrix: matrix.value,
                     itemBuilder: (context, index) {
                       return Container(
