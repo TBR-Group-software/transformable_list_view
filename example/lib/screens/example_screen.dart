@@ -1,11 +1,17 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:transformable_list_view/transformable_list_view.dart';
 
-class ExampleScreen extends StatelessWidget {
+class ExampleScreen extends StatefulWidget {
   const ExampleScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ExampleScreen> createState() => _ExampleScreenState();
+}
+
+class _ExampleScreenState extends State<ExampleScreen> {
   Matrix4 getScaleDownMatrix(TransformableListItem item) {
     /// final scale of child when the animation is completed
     const endScaleBound = 0.3;
@@ -80,9 +86,12 @@ class ExampleScreen extends StatelessWidget {
   }
 
   Matrix4 getWheelMatrix(TransformableListItem item) {
+    /// rotate item to 36 degrees
     const maxRotationTurnsInRadians = pi / 5.0;
     const minScale = 0.6;
     const maxScale = 1.0;
+
+    /// perception of depth when the item rotates
     const depthFactor = 0.01;
 
     /// offset when [animationProgress] == 0
@@ -106,27 +115,67 @@ class ExampleScreen extends StatelessWidget {
     return result;
   }
 
+  late final transformMatrices = {
+    'Scale': getScaleDownMatrix,
+    'Rotate': getRotateMatrix,
+    'Wheel': getWheelMatrix,
+  };
+
+  late String currentMatrix = transformMatrices.entries.first.key;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: TransformableListView.builder(
-        getTransformMatrix: getWheelMatrix,
-        itemBuilder: (context, index) {
-          return Container(
-            height: 100,
-            margin: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 4,
+      body: Column(
+        children: [
+          SafeArea(
+            minimum: const EdgeInsets.symmetric(vertical: 8),
+            child: CupertinoSegmentedControl<String>(
+              children: {
+                for (final matrixTitle in transformMatrices.keys)
+                  matrixTitle: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(matrixTitle),
+                  ),
+              },
+              groupValue: currentMatrix,
+              onValueChanged: (value) {
+                setState(() {
+                  currentMatrix = value;
+                });
+              },
             ),
-            decoration: BoxDecoration(
-              color: index.isEven ? Colors.grey : Colors.blueAccent,
-              borderRadius: BorderRadius.circular(20),
+          ),
+          Expanded(
+            child: IndexedStack(
+              index: transformMatrices.keys.toList().indexOf(currentMatrix),
+              children: [
+                for (final matrix in transformMatrices.entries)
+                  TransformableListView.builder(
+                    key: Key(matrix.key),
+                    controller: ScrollController(),
+                    getTransformMatrix: matrix.value,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        height: 100,
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: index.isEven ? Colors.grey : Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(index.toString()),
+                      );
+                    },
+                    itemCount: 30,
+                  ),
+              ],
             ),
-            alignment: Alignment.center,
-            child: Text(index.toString()),
-          );
-        },
-        itemCount: 30,
+          ),
+        ],
       ),
     );
   }
