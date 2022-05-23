@@ -1,10 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'package:transformable_list_view/src/transform_matrix_callback.dart';
 import 'package:transformable_list_view/transformable_list_view.dart';
 
+/// Extends [ListView] with [getTransformMatrix] callback that allows to add transform animations.
 class TransformableListView extends ListView {
+  /// Receives [TransformableListItem] that contains data about item(offset, size, index, viewport constraints)
+  /// and returns [Matrix4] that represents item transformations on the current offset. If it returns [Matrix4.identity()] no transformation will be applied
   final TransformMatrixCallback getTransformMatrix;
 
   TransformableListView({
