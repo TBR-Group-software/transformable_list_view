@@ -5,7 +5,12 @@ import 'package:transformable_list_view/src/transform_matrix_callback.dart';
 import 'package:transformable_list_view/src/transformable_list_item.dart';
 import 'package:transformable_list_view/src/transformable_render_sliver_helpers.dart';
 
+/// Extends [SliverToBoxAdapter] with [getTransformMatrix] callback that allows to add transform animations.
 class TransformableSliver extends SingleChildRenderObjectWidget {
+  /// Receives [TransformableListItem] that contains data about item(offset, size, viewport constraints)
+  /// and returns [Matrix4] that represents item transformations on the current offset. If it returns [Matrix4.identity()] no transformation will be applied
+  /// 
+  /// Doesn't receive item [index] since doesn't use [SliverList]. If you need index you can use [TransformableListView] or [TransformableSliverList]
   final TransformMatrixCallback getTransformMatrix;
 
   const TransformableSliver({
