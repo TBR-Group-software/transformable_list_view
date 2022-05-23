@@ -1,12 +1,22 @@
 import 'package:flutter/rendering.dart';
 
-/// TODO document it more
 class TransformableListItem {
+  /// Main axis offset of the child.
+  /// By default (with vertical, non reversed scroll view) [offset.dx] is always 0 while [offset.dy] is the distance
+  /// between top edge of the child and top edge of the viewport.
   final Offset offset;
+
+  /// Size of the child received from [RenderBox]
   final Size size;
+
+  /// Describes the current scroll state of the viewport from the point of view of the sliver receiving the constraints.
+  /// For example, a [scrollOffset] of zero means that the leading edge of the sliver is visible in the viewport, not that the viewport itself has a zero scroll offset.
   final SliverConstraints constraints;
+
+  /// Index of the child. Will be null when using [TransformableSliver]
   final int? index;
 
+  /// Contains data about [TransformableListView] or [TransformableSliverList] or [TransformableSliver] scroll item
   const TransformableListItem({
     required this.offset,
     required this.size,
@@ -36,7 +46,7 @@ class TransformableListItem {
     }
   }
 
-  /// Currently visible portion of childs
+  /// Currently visible portion of child
   double get visibleExtent {
     switch (position) {
       case TransformableListItemPosition.topEdge:
