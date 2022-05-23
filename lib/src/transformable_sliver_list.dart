@@ -4,7 +4,10 @@ import 'package:transformable_list_view/src/transform_matrix_callback.dart';
 import 'package:transformable_list_view/src/transformable_list_item.dart';
 import 'package:transformable_list_view/src/transformable_render_sliver_helpers.dart';
 
+/// Extends [SliverList] with [getTransformMatrix] callback that allows to add transform animations.
 class TransformableSliverList extends SliverList {
+  /// Receives [TransformableListItem] that contains data about item(offset, size, index, viewport constraints)
+  /// and returns [Matrix4] that represents item transformations on the current offset. If it returns [Matrix4.identity()] no transformation will be applied
   final TransformMatrixCallback getTransformMatrix;
 
   const TransformableSliverList({
@@ -28,7 +31,7 @@ class TransformableRenderSliverList extends RenderSliverList
     with TransformableRenderSliverHelpers {
   final TransformMatrixCallback getTransformMatrix;
 
-  /// transform of the each child
+  /// transform of each child
   final _cachedTransforms = <RenderBox, Matrix4>{};
 
   TransformableRenderSliverList({
