@@ -1,6 +1,6 @@
 name: transformable_list_view
-description: A new Flutter package project.
-version: 0.0.1
+description: Widget that extends the default ListView with ability to add item transform animations according to it's scroll position
+version: 0.1.0
 homepage:
 
 environment:
