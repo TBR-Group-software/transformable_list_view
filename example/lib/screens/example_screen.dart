@@ -150,12 +150,11 @@ class _ExampleScreenState extends State<ExampleScreen> {
             child: IndexedStack(
               index: transformMatrices.keys.toList().indexOf(currentMatrix),
               children: [
-                for (final matrix in transformMatrices.entries)
+                for (final matrix in transformMatrices.values)
                   TransformableListView.builder(
-                    key: Key(matrix.key),
                     controller: ScrollController(),
                     padding: EdgeInsets.zero,
-                    getTransformMatrix: matrix.value,
+                    getTransformMatrix: matrix,
                     itemBuilder: (context, index) {
                       return Container(
                         height: 100,
