@@ -15,6 +15,13 @@ Scrollable widgets with easily customizable transform animations.
 
 ## Features
 
+<p float="center", align="justify ">
+  <img src="https://user-images.githubusercontent.com/41484688/170032010-045cc3f1-4ead-407f-8312-c23e66aebb04.gif" width="200" />
+  <img src="https://user-images.githubusercontent.com/41484688/170032206-bbef634c-43f0-4e17-8dd4-45f2d82ecc58.gif" width="200" />
+  <img src="https://user-images.githubusercontent.com/41484688/170032220-ea27aa73-a754-4cb0-9676-d9acfdf4e5ca.gif" width="200" />
+</p>
+
+
 The package contains 3 widgets: 
 
 - `TransformableListView` that extends `ListView`
