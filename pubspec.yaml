@@ -1,7 +1,8 @@
 name: transformable_list_view
 description: Widget that extends the default ListView with ability to add item transform animations according to it's scroll position
 version: 0.1.0
-homepage:
+repository: https://github.com/TBR-Group-software/transformable_list_view
+issue_tracker: https://github.com/TBR-Group-software/transformable_list_view/issues
 
 environment:
   sdk: ">=2.17.0 <3.0.0"

@@ -1,7 +1,5 @@
 name: example
 description: A new Flutter project.
-repository: https://github.com/TBR-Group-software/transformable_list_view
-issue_tracker: https://github.com/TBR-Group-software/transformable_list_view/issues
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
