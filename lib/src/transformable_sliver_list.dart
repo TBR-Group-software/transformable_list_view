@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:transformable_list_view/src/transform_matrix_callback.dart';
 import 'package:transformable_list_view/src/transformable_list_item.dart';
-import 'package:transformable_list_view/src/transformable_render_sliver_helpers.dart';
-import 'package:transformable_list_view/src/transformable_render_sliver_multi_box_adaptor.dart';
+import 'package:transformable_list_view/src/mixins/transformable_render_sliver_helpers.dart';
+import 'package:transformable_list_view/src/mixins/transformable_render_sliver_multi_box_adaptor.dart';
 
 /// Extends [SliverList] with [getTransformMatrix] callback that allows to add transform animations.
 class TransformableSliverList extends SliverList {

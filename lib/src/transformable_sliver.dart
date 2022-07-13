@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:transformable_list_view/src/transform_matrix_callback.dart';
 import 'package:transformable_list_view/src/transformable_list_item.dart';
-import 'package:transformable_list_view/src/transformable_render_sliver_helpers.dart';
+import 'package:transformable_list_view/src/mixins/transformable_render_sliver_helpers.dart';
 
 /// Extends [SliverToBoxAdapter] with [getTransformMatrix] callback that allows to add transform animations.
 class TransformableSliver extends SingleChildRenderObjectWidget {
