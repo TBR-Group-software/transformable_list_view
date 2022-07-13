@@ -1,12 +1,14 @@
 import 'package:flutter/rendering.dart';
 
 mixin TransformableRenderSliverHelpers on RenderSliverHelpers {
-  bool hitTestBoxChildWithTransform(
+  Matrix4 getCurrentTransform(RenderBox child);
+
+  @override
+  bool hitTestBoxChild(
     BoxHitTestResult result,
     RenderBox child, {
     required double mainAxisPosition,
     required double crossAxisPosition,
-    required Matrix4 transform,
   }) {
     //// Copied from [RenderSliverHelpers.hitTestBoxChild] except the OVERRIDE
     final bool rightWayUp = _getRightWayUp(constraints);
@@ -38,7 +40,7 @@ mixin TransformableRenderSliverHelpers on RenderSliverHelpers {
     }
     //// ---------------↓↓↓OVERRIDE↓↓↓---------------
     return result.addWithPaintTransform(
-      transform: transform,
+      transform: getCurrentTransform(child),
       position: transformedPosition,
       hitTest: (result, offset) => child.hitTest(result, position: offset),
     );

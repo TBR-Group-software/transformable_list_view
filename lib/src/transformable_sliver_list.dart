@@ -121,14 +121,6 @@ class TransformableRenderSliverList extends RenderSliverList
   }
 
   @override
-  bool hitTestBoxChild(BoxHitTestResult result, RenderBox child,
-      {required double mainAxisPosition, required double crossAxisPosition}) {
-    return hitTestBoxChildWithTransform(
-      result,
-      child,
-      mainAxisPosition: mainAxisPosition,
-      crossAxisPosition: crossAxisPosition,
-      transform: _cachedTransforms[child] ?? Matrix4.identity(),
-    );
-  }
+  Matrix4 getCurrentTransform(RenderBox child) =>
+      _cachedTransforms[child] ?? Matrix4.identity();
 }
