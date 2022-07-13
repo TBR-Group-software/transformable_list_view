@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:transformable_list_view/src/transformable_sliver_fixed_extent_list.dart';
 
 import 'package:transformable_list_view/transformable_list_view.dart';
 
@@ -19,6 +20,7 @@ class TransformableListView extends ListView {
     ScrollPhysics? physics,
     bool shrinkWrap = false,
     EdgeInsetsGeometry? padding,
+    double? itemExtent,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
@@ -39,6 +41,7 @@ class TransformableListView extends ListView {
           physics: physics,
           shrinkWrap: shrinkWrap,
           padding: padding,
+          itemExtent: itemExtent,
           cacheExtent: cacheExtent,
           semanticChildCount: semanticChildCount ?? children.length,
           dragStartBehavior: dragStartBehavior,
@@ -61,6 +64,7 @@ class TransformableListView extends ListView {
     ScrollPhysics? physics,
     bool shrinkWrap = false,
     EdgeInsetsGeometry? padding,
+    double? itemExtent,
     required IndexedWidgetBuilder itemBuilder,
     ChildIndexGetter? findChildIndexCallback,
     int? itemCount,
@@ -83,6 +87,7 @@ class TransformableListView extends ListView {
           physics: physics,
           shrinkWrap: shrinkWrap,
           padding: padding,
+          itemExtent: itemExtent,
           cacheExtent: cacheExtent,
           semanticChildCount: semanticChildCount ?? itemCount,
           dragStartBehavior: dragStartBehavior,
@@ -153,6 +158,7 @@ class TransformableListView extends ListView {
     ScrollPhysics? physics,
     bool shrinkWrap = false,
     EdgeInsetsGeometry? padding,
+    double? itemExtent,
     required SliverChildDelegate childrenDelegate,
     double? cacheExtent,
     int? semanticChildCount,
@@ -170,6 +176,7 @@ class TransformableListView extends ListView {
           physics: physics,
           shrinkWrap: shrinkWrap,
           padding: padding,
+          itemExtent: itemExtent,
           cacheExtent: cacheExtent,
           semanticChildCount: semanticChildCount,
           dragStartBehavior: dragStartBehavior,
@@ -183,6 +190,17 @@ class TransformableListView extends ListView {
   Widget buildChildLayout(BuildContext context) {
     /// TODO [SliverFixedExtentList] && [itemExtent]
     /// TODO [SliverPrototypeExtentList] && [prototypeItem]
+    /// TODO Matrix + Alignment
+
+    final itemExtent = this.itemExtent;
+
+    if (itemExtent != null) {
+      return TransformableSliverFixedExtentList(
+        itemExtent: itemExtent,
+        delegate: childrenDelegate,
+        getTransformMatrix: getTransformMatrix,
+      );
+    }
 
     return TransformableSliverList(
       delegate: childrenDelegate,
