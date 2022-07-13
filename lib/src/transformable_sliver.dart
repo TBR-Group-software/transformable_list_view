@@ -14,10 +14,10 @@ class TransformableSliver extends SingleChildRenderObjectWidget {
   final TransformMatrixCallback getTransformMatrix;
 
   const TransformableSliver({
-    Key? key,
-    required Widget child,
     required this.getTransformMatrix,
-  }) : super(key: key, child: child);
+    required super.child,
+    super.key,
+  });
 
   @override
   TransformableRenderSliver createRenderObject(BuildContext context) {

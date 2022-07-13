@@ -11,9 +11,9 @@ class TransformableSliverFixedExtentList extends SliverFixedExtentList {
   final TransformMatrixCallback getTransformMatrix;
 
   const TransformableSliverFixedExtentList({
+    required this.getTransformMatrix,
     required super.itemExtent,
     required super.delegate,
-    required this.getTransformMatrix,
     super.key,
   });
 
@@ -39,9 +39,9 @@ class TransformableRenderSliverFixedExtentList
   final TransformMatrixCallback getTransformMatrix;
 
   TransformableRenderSliverFixedExtentList({
+    required this.getTransformMatrix,
     required super.childManager,
     required super.itemExtent,
-    required this.getTransformMatrix,
   });
 
   @override

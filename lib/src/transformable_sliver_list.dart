@@ -12,10 +12,10 @@ class TransformableSliverList extends SliverList {
   final TransformMatrixCallback getTransformMatrix;
 
   const TransformableSliverList({
-    required SliverChildDelegate delegate,
     required this.getTransformMatrix,
-    Key? key,
-  }) : super(key: key, delegate: delegate);
+    required super.delegate,
+    super.key,
+  });
 
   @override
   TransformableRenderSliverList createRenderObject(BuildContext context) {
@@ -36,9 +36,9 @@ class TransformableRenderSliverList extends RenderSliverList
   final TransformMatrixCallback getTransformMatrix;
 
   TransformableRenderSliverList({
-    required RenderSliverBoxChildManager childManager,
     required this.getTransformMatrix,
-  }) : super(childManager: childManager);
+    required super.childManager,
+  });
 
   @override
   Matrix4 getCurrentTransform(RenderBox child) =>
