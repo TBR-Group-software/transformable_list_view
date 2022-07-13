@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:transformable_list_view/transformable_list_view.dart';
 
+/// {@template transformable_list_view}
 /// Extends [ListView] with [getTransformMatrix] callback that allows to add transform animations.
+/// {@endtemplate}
 class TransformableListView extends ListView {
   /// Receives [TransformableListItem] that contains data about item(offset, size, index, viewport constraints)
   /// and returns [Matrix4] that represents item transformations on the current offset. If it returns [Matrix4.identity()] no transformation will be applied
   final TransformMatrixCallback getTransformMatrix;
 
+  /// {@macro transformable_list_view}
   TransformableListView({
     required this.getTransformMatrix,
     super.key,
@@ -31,6 +34,7 @@ class TransformableListView extends ListView {
     super.clipBehavior,
   });
 
+  /// {@macro transformable_list_view}
   TransformableListView.builder({
     required super.itemBuilder,
     required this.getTransformMatrix,
@@ -56,6 +60,7 @@ class TransformableListView extends ListView {
     super.clipBehavior,
   }) : super.builder();
 
+  /// {@macro transformable_list_view}
   TransformableListView.separated({
     required this.getTransformMatrix,
     required super.itemBuilder,
@@ -80,6 +85,7 @@ class TransformableListView extends ListView {
     super.clipBehavior,
   }) : super.separated();
 
+  /// {@macro transformable_list_view}
   const TransformableListView.custom({
     required this.getTransformMatrix,
     required super.childrenDelegate,

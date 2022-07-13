@@ -1,5 +1,8 @@
 import 'package:flutter/rendering.dart';
 
+/// {@template transformable_list_item}
+/// Contains data about [TransformableListView] or [TransformableSliverList] or [TransformableSliver] scroll item
+/// {@endtemplate}
 class TransformableListItem {
   /// Main axis offset of the child.
   /// By default (with vertical, non reversed scroll view) [offset.dx] is always 0 while [offset.dy] is the distance
@@ -15,7 +18,7 @@ class TransformableListItem {
   /// Index of the child. Will be null when using [TransformableSliver]
   final int? index;
 
-  /// Contains data about [TransformableListView] or [TransformableSliverList] or [TransformableSliver] scroll item
+  /// {@macro transformable_list_item}
   const TransformableListItem({
     required this.offset,
     required this.size,
