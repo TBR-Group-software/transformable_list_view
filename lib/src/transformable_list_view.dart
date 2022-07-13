@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:transformable_list_view/src/transformable_sliver_fixed_extent_list.dart';
 
 import 'package:transformable_list_view/transformable_list_view.dart';
 
@@ -188,7 +187,6 @@ class TransformableListView extends ListView {
 
   @override
   Widget buildChildLayout(BuildContext context) {
-    /// TODO [SliverFixedExtentList] && [itemExtent]
     /// TODO [SliverPrototypeExtentList] && [prototypeItem]
     /// TODO Matrix + Alignment
 
