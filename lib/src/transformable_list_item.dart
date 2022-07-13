@@ -38,7 +38,8 @@ class TransformableListItem {
 
     if (mainAxisOffset < 0) {
       return TransformableListItemPosition.topEdge;
-    } else if (mainAxisOffset > constraints.viewportMainAxisExtent - _totalExtent) {
+    } else if (mainAxisOffset >
+        constraints.viewportMainAxisExtent - _totalExtent) {
       return TransformableListItemPosition.bottomEdge;
     } else {
       return TransformableListItemPosition.middle;
