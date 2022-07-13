@@ -1,50 +1,54 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:transformable_list_view/src/transform_matrix_callback.dart';
-import 'package:transformable_list_view/src/transformable_list_item.dart';
+import 'package:flutter/widgets.dart';
 import 'package:transformable_list_view/src/mixins/transformable_render_sliver_helpers.dart';
 import 'package:transformable_list_view/src/mixins/transformable_render_sliver_multi_box_adaptor.dart';
+import 'package:transformable_list_view/src/transform_matrix_callback.dart';
 
-/// {@template transformable_sliver_list}
-/// Extends [SliverList] with [getTransformMatrix] callback that allows to add transform animations.
+/// {@template transformable_sliver_fixed_extent_list}
+/// Extends [SliverFixedExtentList] with [getTransformMatrix] callback that allows to add transform animations.
 /// {@endtemplate}
-class TransformableSliverList extends SliverList {
+class TransformableSliverFixedExtentList extends SliverFixedExtentList {
   /// Receives [TransformableListItem] that contains data about item(offset, size, index, viewport constraints)
   /// and returns [Matrix4] that represents item transformations on the current offset. If it returns [Matrix4.identity()] no transformation will be applied
   final TransformMatrixCallback getTransformMatrix;
-
-  /// {@macro transformable_sliver_list}
-  const TransformableSliverList({
+  
+  /// {@macro transformable_sliver_fixed_extent_list}
+  const TransformableSliverFixedExtentList({
     required this.getTransformMatrix,
+    required super.itemExtent,
     required super.delegate,
     super.key,
   });
 
   @override
-  TransformableRenderSliverList createRenderObject(BuildContext context) {
+  TransformableRenderSliverFixedExtentList createRenderObject(
+      BuildContext context) {
     final element = context as SliverMultiBoxAdaptorElement;
 
-    return TransformableRenderSliverList(
+    return TransformableRenderSliverFixedExtentList(
       childManager: element,
+      itemExtent: itemExtent,
       getTransformMatrix: getTransformMatrix,
     );
   }
 }
 
-/// {@template transformable_render_sliver_list}
-/// Extends [RenderSliverList] with [getTransformMatrix] callback that allows to add transform animations.
+/// {@template transformable_render_sliver_fixed_extent_list}
+/// Extends [RenderSliverFixedExtentList] with [getTransformMatrix] callback that allows to add transform animations.
 /// {@endtemplate}
-class TransformableRenderSliverList extends RenderSliverList
+class TransformableRenderSliverFixedExtentList
+    extends RenderSliverFixedExtentList
     with
         TransformableRenderSliverMultiBoxAdaptor,
         TransformableRenderSliverHelpers {
   @override
   final TransformMatrixCallback getTransformMatrix;
-
-  /// {@macro transformable_render_sliver_list}
-  TransformableRenderSliverList({
+  
+  /// {@macro transformable_render_sliver_fixed_extent_list}
+  TransformableRenderSliverFixedExtentList({
     required this.getTransformMatrix,
     required super.childManager,
+    required super.itemExtent,
   });
 
   @override

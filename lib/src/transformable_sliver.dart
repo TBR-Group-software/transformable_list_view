@@ -3,21 +3,24 @@ import 'package:flutter/rendering.dart';
 
 import 'package:transformable_list_view/src/transform_matrix_callback.dart';
 import 'package:transformable_list_view/src/transformable_list_item.dart';
-import 'package:transformable_list_view/src/transformable_render_sliver_helpers.dart';
+import 'package:transformable_list_view/src/mixins/transformable_render_sliver_helpers.dart';
 
+/// {@template transformable_sliver}
 /// Extends [SliverToBoxAdapter] with [getTransformMatrix] callback that allows to add transform animations.
+/// {@endtemplate}
 class TransformableSliver extends SingleChildRenderObjectWidget {
   /// Receives [TransformableListItem] that contains data about item(offset, size, viewport constraints)
   /// and returns [Matrix4] that represents item transformations on the current offset. If it returns [Matrix4.identity()] no transformation will be applied
-  /// 
+  ///
   /// Doesn't receive item [index] since doesn't use [SliverList]. If you need index you can use [TransformableListView] or [TransformableSliverList]
   final TransformMatrixCallback getTransformMatrix;
-
+  
+  /// {@macro transformable_sliver}
   const TransformableSliver({
-    Key? key,
-    required Widget child,
     required this.getTransformMatrix,
-  }) : super(key: key, child: child);
+    required super.child,
+    super.key,
+  });
 
   @override
   TransformableRenderSliver createRenderObject(BuildContext context) {
@@ -25,6 +28,9 @@ class TransformableSliver extends SingleChildRenderObjectWidget {
   }
 }
 
+/// {@template transformable_render_sliver}
+/// Extends [SliverToBoxAdapter] with [RenderSliverToBoxAdapter] callback that allows to add transform animations.
+/// {@endtemplate}
 class TransformableRenderSliver extends RenderSliverToBoxAdapter
     with TransformableRenderSliverHelpers {
   final TransformMatrixCallback getTransformMatrix;
@@ -32,6 +38,7 @@ class TransformableRenderSliver extends RenderSliverToBoxAdapter
 
   Matrix4 paintTransform = Matrix4.identity();
 
+  /// {@macro transformable_render_sliver}
   TransformableRenderSliver({required this.getTransformMatrix});
 
   @override
@@ -45,10 +52,12 @@ class TransformableRenderSliver extends RenderSliverToBoxAdapter
     final Offset itemOffset;
     switch (constraints.axis) {
       case Axis.horizontal:
-        itemOffset = offset.translate(offset.dx == 0 ? -constraints.scrollOffset : 0, 0);
+        itemOffset =
+            offset.translate(offset.dx == 0 ? -constraints.scrollOffset : 0, 0);
         break;
       case Axis.vertical:
-        itemOffset = offset.translate(0, offset.dy == 0 ? -constraints.scrollOffset : 0);
+        itemOffset =
+            offset.translate(0, offset.dy == 0 ? -constraints.scrollOffset : 0);
         break;
     }
 
@@ -72,14 +81,5 @@ class TransformableRenderSliver extends RenderSliverToBoxAdapter
   }
 
   @override
-  bool hitTestBoxChild(BoxHitTestResult result, RenderBox child,
-      {required double mainAxisPosition, required double crossAxisPosition}) {
-    return hitTestBoxChildWithTransform(
-      result,
-      child,
-      mainAxisPosition: mainAxisPosition,
-      crossAxisPosition: crossAxisPosition,
-      transform: paintTransform,
-    );
-  }
+  Matrix4 getCurrentTransform(RenderBox child) => paintTransform;
 }
