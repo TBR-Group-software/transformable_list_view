@@ -11,7 +11,7 @@ class TransformableSliverFixedExtentList extends SliverFixedExtentList {
   /// Receives [TransformableListItem] that contains data about item(offset, size, index, viewport constraints)
   /// and returns [Matrix4] that represents item transformations on the current offset. If it returns [Matrix4.identity()] no transformation will be applied
   final TransformMatrixCallback getTransformMatrix;
-  
+
   /// {@macro transformable_sliver_fixed_extent_list}
   const TransformableSliverFixedExtentList({
     required this.getTransformMatrix,
@@ -43,7 +43,7 @@ class TransformableRenderSliverFixedExtentList
         TransformableRenderSliverHelpers {
   @override
   final TransformMatrixCallback getTransformMatrix;
-  
+
   /// {@macro transformable_render_sliver_fixed_extent_list}
   TransformableRenderSliverFixedExtentList({
     required this.getTransformMatrix,

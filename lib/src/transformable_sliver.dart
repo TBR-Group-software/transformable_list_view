@@ -14,7 +14,7 @@ class TransformableSliver extends SingleChildRenderObjectWidget {
   ///
   /// Doesn't receive item [index] since doesn't use [SliverList]. If you need index you can use [TransformableListView] or [TransformableSliverList]
   final TransformMatrixCallback getTransformMatrix;
-  
+
   /// {@macro transformable_sliver}
   const TransformableSliver({
     required this.getTransformMatrix,
