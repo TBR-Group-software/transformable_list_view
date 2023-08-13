@@ -25,18 +25,14 @@ mixin TransformableRenderSliverHelpers on RenderSliverHelpers {
           delta = geometry!.paintExtent - child.size.width - delta;
         }
         paintOffset = Offset(delta, crossAxisDelta);
-        transformedPosition =
-            Offset(absolutePosition, absoluteCrossAxisPosition);
-        break;
+        transformedPosition = Offset(absolutePosition, absoluteCrossAxisPosition);
       case Axis.vertical:
         if (!rightWayUp) {
           absolutePosition = child.size.height - absolutePosition;
           delta = geometry!.paintExtent - child.size.height - delta;
         }
         paintOffset = Offset(crossAxisDelta, delta);
-        transformedPosition =
-            Offset(absoluteCrossAxisPosition, absolutePosition);
-        break;
+        transformedPosition = Offset(absoluteCrossAxisPosition, absolutePosition);
     }
     //// ---------------↓↓↓OVERRIDE↓↓↓---------------
     return result.addWithPaintTransform(
@@ -54,18 +50,15 @@ mixin TransformableRenderSliverHelpers on RenderSliverHelpers {
       case AxisDirection.up:
       case AxisDirection.left:
         rightWayUp = false;
-        break;
       case AxisDirection.down:
       case AxisDirection.right:
         rightWayUp = true;
-        break;
     }
     switch (constraints.growthDirection) {
       case GrowthDirection.forward:
         break;
       case GrowthDirection.reverse:
         rightWayUp = !rightWayUp;
-        break;
     }
     return rightWayUp;
   }
