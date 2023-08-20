@@ -1,3 +1,7 @@
+# 0.4.0
+
+- Dependencies upgrade to support Flutter 3.13 and Dart 3.1
+
 # 0.3.0
 
 - Dependencies upgrade to support Flutter 3.7 and Dart 2.19.2
