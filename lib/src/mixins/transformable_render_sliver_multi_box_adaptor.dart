@@ -19,7 +19,8 @@ mixin TransformableRenderSliverMultiBoxAdaptor on RenderSliverMultiBoxAdaptor {
     // originOffset gives us the delta from the real origin to the origin in the axis direction.
     final Offset mainAxisUnit, crossAxisUnit, originOffset;
     final bool addExtent;
-    switch (applyGrowthDirectionToAxisDirection(constraints.axisDirection, constraints.growthDirection)) {
+    switch (applyGrowthDirectionToAxisDirection(
+        constraints.axisDirection, constraints.growthDirection)) {
       case AxisDirection.up:
         mainAxisUnit = const Offset(0.0, -1.0);
         crossAxisUnit = const Offset(1.0, 0.0);
@@ -46,8 +47,12 @@ mixin TransformableRenderSliverMultiBoxAdaptor on RenderSliverMultiBoxAdaptor {
       final double mainAxisDelta = childMainAxisPosition(child);
       final double crossAxisDelta = childCrossAxisPosition(child);
       Offset childOffset = Offset(
-        originOffset.dx + mainAxisUnit.dx * mainAxisDelta + crossAxisUnit.dx * crossAxisDelta,
-        originOffset.dy + mainAxisUnit.dy * mainAxisDelta + crossAxisUnit.dy * crossAxisDelta,
+        originOffset.dx +
+            mainAxisUnit.dx * mainAxisDelta +
+            crossAxisUnit.dx * crossAxisDelta,
+        originOffset.dy +
+            mainAxisUnit.dy * mainAxisDelta +
+            crossAxisUnit.dy * crossAxisDelta,
       );
       if (addExtent) {
         childOffset += mainAxisUnit * paintExtentOf(child);
