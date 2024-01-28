@@ -20,6 +20,41 @@ class TransformableSliverList extends SliverList {
     super.key,
   });
 
+  /// Extends [SliverList.builder] with [getTransformMatrix] callback that allows to add transform animations.
+  TransformableSliverList.builder({
+    super.key,
+    required this.getTransformMatrix,
+    required super.itemBuilder,
+    super.findChildIndexCallback,
+    super.itemCount,
+    super.addAutomaticKeepAlives,
+    super.addRepaintBoundaries,
+    super.addSemanticIndexes,
+  }) : super.builder();
+
+  /// Extends [SliverList.separated] with [getTransformMatrix] callback that allows to add transform animations.
+  TransformableSliverList.separated({
+    super.key,
+    required this.getTransformMatrix,
+    required super.itemBuilder,
+    super.findChildIndexCallback,
+    required super.separatorBuilder,
+    super.itemCount,
+    super.addAutomaticKeepAlives,
+    super.addRepaintBoundaries,
+    super.addSemanticIndexes,
+  }) : super.separated();
+
+  /// Extends [SliverList.list] with [getTransformMatrix] callback that allows to add transform animations.
+  TransformableSliverList.list({
+    super.key,
+    required this.getTransformMatrix,
+    required super.children,
+    super.addAutomaticKeepAlives,
+    super.addRepaintBoundaries,
+    super.addSemanticIndexes,
+  }) : super.list();
+
   @override
   TransformableRenderSliverList createRenderObject(BuildContext context) {
     final element = context as SliverMultiBoxAdaptorElement;
