@@ -20,6 +20,30 @@ class TransformableSliverFixedExtentList extends SliverFixedExtentList {
     super.key,
   });
 
+  /// Extends [SliverFixedExtentList.builder] with [getTransformMatrix] callback that allows to add transform animations.
+  TransformableSliverFixedExtentList.builder({
+    super.key,
+    required this.getTransformMatrix,
+    required super.itemBuilder,
+    required super.itemExtent,
+    super.findChildIndexCallback,
+    super.itemCount,
+    super.addAutomaticKeepAlives,
+    super.addRepaintBoundaries,
+    super.addSemanticIndexes,
+  }) : super.builder();
+
+  /// Extends [SliverFixedExtentList.list] with [getTransformMatrix] callback that allows to add transform animations.
+  TransformableSliverFixedExtentList.list({
+    super.key,
+    required this.getTransformMatrix,
+    required super.children,
+    required super.itemExtent,
+    super.addAutomaticKeepAlives,
+    super.addRepaintBoundaries,
+    super.addSemanticIndexes,
+  }) : super.list();
+
   @override
   TransformableRenderSliverFixedExtentList createRenderObject(
       BuildContext context) {
