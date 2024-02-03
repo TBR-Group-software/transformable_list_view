@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:transformable_list_view/transformable_list_view.dart';
 
@@ -11,23 +10,188 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Transformable List View Example',
-      home: ExampleScreen(),
+      home: Builder(
+        builder: (context) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const ListViewExample(
+                            transformMatrix: TransformMatrices.scaleDown,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text('Scale Down Example'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const ListViewExample(
+                            transformMatrix: TransformMatrices.rotate,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text('Rotate Example'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const ListViewExample(
+                            transformMatrix: TransformMatrices.wheel,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text('Wheel Example'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SliverExampleScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('Sliver Example'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
 
-class ExampleScreen extends StatefulWidget {
-  const ExampleScreen({super.key});
+class ListViewExample extends StatelessWidget {
+  const ListViewExample({
+    super.key,
+    required this.transformMatrix,
+  });
+
+  final TransformMatrixCallback transformMatrix;
 
   @override
-  State<ExampleScreen> createState() => _ExampleScreenState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('ListView Example'),
+      ),
+      body: TransformableListView.builder(
+        padding: EdgeInsets.zero,
+        getTransformMatrix: transformMatrix,
+        itemCount: 30,
+        itemBuilder: (context, index) {
+          return Container(
+            height: 100,
+            margin: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 4,
+            ),
+            decoration: BoxDecoration(
+              color: index.isEven ? Colors.grey : Colors.blueAccent,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            alignment: Alignment.center,
+            child: Text(index.toString()),
+          );
+        },
+      ),
+    );
+  }
 }
 
-class _ExampleScreenState extends State<ExampleScreen> {
-  Matrix4 getScaleDownMatrix(TransformableListItem item) {
+class SliverExampleScreen extends StatelessWidget {
+  const SliverExampleScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          const SliverAppBar(
+            title: Text('Sliver Example'),
+            floating: true,
+            snap: true,
+          ),
+          TransformableSliverList.builder(
+            itemCount: 10,
+            getTransformMatrix: TransformMatrices.scaleDown,
+            itemBuilder: (context, index) {
+              return Container(
+                height: 100,
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: index.isEven ? Colors.grey : Colors.blueAccent,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                alignment: Alignment.center,
+                child: Text(index.toString()),
+              );
+            },
+          ),
+          TransformableSliverList.builder(
+            itemCount: 10,
+            getTransformMatrix: TransformMatrices.rotate,
+            itemBuilder: (context, index) {
+              return Container(
+                height: 100,
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: index.isEven ? Colors.grey : Colors.green,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                alignment: Alignment.center,
+                child: Text(index.toString()),
+              );
+            },
+          ),
+          TransformableSliverList.builder(
+            itemCount: 10,
+            getTransformMatrix: TransformMatrices.wheel,
+            itemBuilder: (context, index) {
+              return Container(
+                height: 100,
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: index.isEven ? Colors.grey : Colors.amber,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                alignment: Alignment.center,
+                child: Text(index.toString()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TransformMatrices {
+  static Matrix4 scaleDown(TransformableListItem item) {
     /// final scale of child when the animation is completed
     const endScaleBound = 0.3;
 
@@ -51,7 +215,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
     return paintTransform;
   }
 
-  Matrix4 getRotateMatrix(TransformableListItem item) {
+  static Matrix4 rotate(TransformableListItem item) {
     /// rotate item to 90 degrees
     const maxRotationTurnsInRadians = pi / 2.0;
 
@@ -100,7 +264,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
     return paintTransform;
   }
 
-  Matrix4 getWheelMatrix(TransformableListItem item) {
+  static Matrix4 wheel(TransformableListItem item) {
     /// rotate item to 36 degrees
     const maxRotationTurnsInRadians = pi / 5.0;
     const minScale = 0.6;
@@ -128,70 +292,5 @@ class _ExampleScreenState extends State<ExampleScreen> {
       ..translate(-translationOffset.dx, -translationOffset.dy);
 
     return result;
-  }
-
-  late final transformMatrices = {
-    'Scale': getScaleDownMatrix,
-    'Rotate': getRotateMatrix,
-    'Wheel': getWheelMatrix,
-  };
-
-  late String currentMatrix = transformMatrices.entries.first.key;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          SafeArea(
-            minimum: const EdgeInsets.symmetric(vertical: 8),
-            child: CupertinoSegmentedControl<String>(
-              children: {
-                for (final matrixTitle in transformMatrices.keys)
-                  matrixTitle: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(matrixTitle),
-                  ),
-              },
-              groupValue: currentMatrix,
-              onValueChanged: (value) {
-                setState(() {
-                  currentMatrix = value;
-                });
-              },
-            ),
-          ),
-          Expanded(
-            child: IndexedStack(
-              index: transformMatrices.keys.toList().indexOf(currentMatrix),
-              children: [
-                for (final matrix in transformMatrices.values)
-                  TransformableListView.builder(
-                    controller: ScrollController(),
-                    padding: EdgeInsets.zero,
-                    getTransformMatrix: matrix,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        height: 100,
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: index.isEven ? Colors.grey : Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(index.toString()),
-                      );
-                    },
-                    itemCount: 30,
-                  ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
