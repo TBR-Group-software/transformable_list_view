@@ -1,3 +1,7 @@
+# 0.6.0
+
+- Added screenshots and topics
+
 # 0.5.0
 
 - Added `TransformableSliverList.builder`, `TransformableSliverList.separated` and `TransformableListView.list` constuctors
