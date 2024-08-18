@@ -1,11 +1,26 @@
 name: transformable_list_view
 description: Widget that extends the default ListView with ability to add item transform animations according to it's scroll position
-version: 0.5.0
+version: 0.6.0
 repository: https://github.com/TBR-Group-software/transformable_list_view
 issue_tracker: https://github.com/TBR-Group-software/transformable_list_view/issues
+screenshots:
+  - description: "ListView with scale down effect."
+    path: screenshots/scale_down.gif
+  - description: "ListView with rotate effect."
+    path: screenshots/rotate.gif
+  - description: "ListView with wheel effect."
+    path: screenshots/wheel.gif
+topics:
+  - animation
+  - effects
+  - widget
+  - list
+  - scroll
+  - list-view
+  - sliver
 
 environment:
-  sdk: '>=3.2.4 <4.0.0'
+  sdk: ">=3.2.4 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
