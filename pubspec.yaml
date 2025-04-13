@@ -4,12 +4,8 @@ version: 0.6.0
 repository: https://github.com/TBR-Group-software/transformable_list_view
 issue_tracker: https://github.com/TBR-Group-software/transformable_list_view/issues
 screenshots:
-  - description: "ListView with scale down effect."
-    path: screenshots/scale_down.gif
-  - description: "ListView with rotate effect."
-    path: screenshots/rotate.gif
   - description: "ListView with wheel effect."
-    path: screenshots/wheel.gif
+    path: screenshots/wheel.png
 topics:
   - animation
   - widget
