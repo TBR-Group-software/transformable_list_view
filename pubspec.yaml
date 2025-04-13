@@ -12,9 +12,7 @@ screenshots:
     path: screenshots/wheel.gif
 topics:
   - animation
-  - effects
   - widget
-  - list
   - scroll
   - list-view
   - sliver
