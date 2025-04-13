@@ -1,3 +1,8 @@
+# 0.7.0
+
+- Updated screenshots
+- Updated dependencies to support Flutter 3.29.2 and Dart 3.7.2
+
 # 0.6.0
 
 - Added screenshots and topics
