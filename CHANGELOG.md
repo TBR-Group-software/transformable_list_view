@@ -1,3 +1,8 @@
+# 0.8.0
+
+- Updated dependencies to support Dart 3.10.0
+- Use dot shorthands for enum and constructors where applicable
+
 # 0.7.0
 
 - Updated screenshots
