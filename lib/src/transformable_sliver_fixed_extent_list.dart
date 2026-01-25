@@ -46,7 +46,8 @@ class TransformableSliverFixedExtentList extends SliverFixedExtentList {
 
   @override
   TransformableRenderSliverFixedExtentList createRenderObject(
-      BuildContext context) {
+    BuildContext context,
+  ) {
     final element = context as SliverMultiBoxAdaptorElement;
 
     return TransformableRenderSliverFixedExtentList(
@@ -77,5 +78,5 @@ class TransformableRenderSliverFixedExtentList
 
   @override
   Matrix4 getCurrentTransform(RenderBox child) =>
-      cachedTransforms[child] ?? Matrix4.identity();
+      cachedTransforms[child] ?? .identity();
 }

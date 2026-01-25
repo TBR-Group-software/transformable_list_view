@@ -36,7 +36,7 @@ class TransformableRenderSliver extends RenderSliverToBoxAdapter
   final TransformMatrixCallback getTransformMatrix;
   final transformLayer = LayerHandle<TransformLayer>();
 
-  Matrix4 paintTransform = Matrix4.identity();
+  Matrix4 paintTransform = .identity();
 
   /// {@macro transformable_render_sliver}
   TransformableRenderSliver({required this.getTransformMatrix});
@@ -51,13 +51,17 @@ class TransformableRenderSliver extends RenderSliverToBoxAdapter
 
     final Offset itemOffset;
     switch (constraints.axis) {
-      case Axis.horizontal:
-        itemOffset =
-            offset.translate(offset.dx == 0 ? -constraints.scrollOffset : 0, 0);
+      case .horizontal:
+        itemOffset = offset.translate(
+          offset.dx == 0 ? -constraints.scrollOffset : 0,
+          0,
+        );
         break;
-      case Axis.vertical:
-        itemOffset =
-            offset.translate(0, offset.dy == 0 ? -constraints.scrollOffset : 0);
+      case .vertical:
+        itemOffset = offset.translate(
+          0,
+          offset.dy == 0 ? -constraints.scrollOffset : 0,
+        );
         break;
     }
 
