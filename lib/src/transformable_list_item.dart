@@ -29,36 +29,31 @@ class TransformableListItem {
   /// Child position on the main axis viewport
   TransformableListItemPosition get position {
     final mainAxisOffset = switch (constraints.axis) {
-      Axis.horizontal => offset.dx,
-      Axis.vertical => offset.dy,
+      .horizontal => offset.dx,
+      .vertical => offset.dy,
     };
 
     if (mainAxisOffset < 0) {
-      return TransformableListItemPosition.topEdge;
+      return .topEdge;
     } else if (mainAxisOffset >
         constraints.viewportMainAxisExtent - _totalExtent) {
-      return TransformableListItemPosition.bottomEdge;
+      return .bottomEdge;
     } else {
-      return TransformableListItemPosition.middle;
+      return .middle;
     }
   }
 
   /// Currently visible portion of child
   double get visibleExtent => switch (position) {
-        TransformableListItemPosition.topEdge => _totalExtent + offset.dy,
-        TransformableListItemPosition.middle => _totalExtent,
-        TransformableListItemPosition.bottomEdge =>
-          constraints.viewportMainAxisExtent - offset.dy,
-      };
+    .topEdge => _totalExtent + offset.dy,
+    .middle => _totalExtent,
+    .bottomEdge => constraints.viewportMainAxisExtent - offset.dy,
+  };
 
   double get _totalExtent => switch (constraints.axis) {
-        Axis.horizontal => size.width,
-        Axis.vertical => size.height,
-      };
+    .horizontal => size.width,
+    .vertical => size.height,
+  };
 }
 
-enum TransformableListItemPosition {
-  topEdge,
-  middle,
-  bottomEdge,
-}
+enum TransformableListItemPosition { topEdge, middle, bottomEdge }
